@@ -134,3 +134,6 @@ REST_FRAMEWORK = {
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Tells Django to use our custom User model instead of the default one
+AUTH_USER_MODEL = 'users.User'
