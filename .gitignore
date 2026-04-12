@@ -13,4 +13,5 @@ db.sqlite3
 .env
 
 #Postman 
+postman/
 .postman/
