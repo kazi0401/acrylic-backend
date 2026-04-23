@@ -1,0 +1,110 @@
+[
+  {
+    "model": "songs.genre",
+    "pk": 1,
+    "fields": { "name": "Jazz" }
+  },
+  {
+    "model": "songs.genre",
+    "pk": 2,
+    "fields": { "name": "Electronic" }
+  },
+  {
+    "model": "songs.genre",
+    "pk": 3,
+    "fields": { "name": "Hip Hop" }
+  },
+  {
+    "model": "songs.moodtag",
+    "pk": 1,
+    "fields": { "name": "Chill" }
+  },
+  {
+    "model": "songs.moodtag",
+    "pk": 2,
+    "fields": { "name": "Energetic" }
+  },
+  {
+    "model": "songs.moodtag",
+    "pk": 3,
+    "fields": { "name": "Dark" }
+  },
+  {
+    "model": "songs.instrument",
+    "pk": 1,
+    "fields": { "name": "Piano" }
+  },
+  {
+    "model": "songs.instrument",
+    "pk": 2,
+    "fields": { "name": "Guitar" }
+  },
+  {
+    "model": "songs.instrument",
+    "pk": 3,
+    "fields": { "name": "Drums" }
+  },
+  {
+    "model": "songs.song",
+    "pk": 1,
+    "fields": {
+      "title": "Midnight Groove",
+      "artist": 1,
+      "duration": 187,
+      "bpm": 95,
+      "full_track": "songs/full/placeholder.mp3",
+      "preview_clip": "songs/previews/placeholder.mp3",
+      "spotify_link": "https://open.spotify.com/track/placeholder",
+      "apple_music_link": null,
+      "genre": 1,
+      "mood_tags": [1],
+      "instruments": [1, 2],
+      "play_count": 120,
+      "license_count": 5,
+      "is_approved": true,
+      "uploaded_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 2,
+    "fields": {
+      "title": "Neon Rush",
+      "artist": 1,
+      "duration": 210,
+      "bpm": 128,
+      "full_track": "songs/full/placeholder.mp3",
+      "preview_clip": "songs/previews/placeholder.mp3",
+      "spotify_link": null,
+      "apple_music_link": "https://music.apple.com/placeholder",
+      "genre": 2,
+      "mood_tags": [2],
+      "instruments": [3],
+      "play_count": 340,
+      "license_count": 12,
+      "is_approved": true,
+      "uploaded_at": "2024-01-02T00:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 3,
+    "fields": {
+      "title": "Shadow Walk",
+      "artist": 1,
+      "duration": 195,
+      "bpm": 85,
+      "full_track": "songs/full/placeholder.mp3",
+      "preview_clip": "songs/previews/placeholder.mp3",
+      "spotify_link": null,
+      "apple_music_link": null,
+      "genre": 3,
+      "mood_tags": [3],
+      "instruments": [2, 3],
+      "play_count": 89,
+      "license_count": 3,
+      "is_approved": true,
+      "uploaded_at": "2024-01-03T00:00:00Z"
+    }
+  }
+]
