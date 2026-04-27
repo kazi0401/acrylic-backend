@@ -34,8 +34,8 @@ SIGNWELL_BUYER_TEMPLATE_ID = getenv("SIGNWELL_BUYER_TEMPLATE_ID")
 
 CURRENT_CONTRACT_VERSION = "v1.0"
 SIGNWELL_TEMPLATE_IDS = {
-    'rightsholder': os.getenv("SIGNWELL_RIGHTSHOLDER_TEMPLATE_ID"),
-    'buyer': os.getenv("SIGNWELL_BUYER_TEMPLATE_ID"),
+    'rightsholder': getenv("SIGNWELL_RIGHTSHOLDER_TEMPLATE_ID"),
+    'buyer': getenv("SIGNWELL_BUYER_TEMPLATE_ID"),
 }
 
 FRONTEND_URL = getenv("FRONTEND_URL", "http://localhost:3000")

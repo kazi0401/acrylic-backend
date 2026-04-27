@@ -35,7 +35,7 @@ class InitiateSigningView(APIView):
             return Response({"detail": "Contract already signed."}, status=200)
 
         # Create a new SignWell document
-        template_id = settings.TEMPLATE_IDS[contract_type]
+        template_id = settings.SIGNWELL_TEMPLATE_IDS[contract_type]
         document_id, signing_url = create_signing_document(
             user, contract_type, template_id
         )

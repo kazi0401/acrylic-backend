@@ -5,10 +5,12 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Song, Genre, MoodTag, Instrument
 from .serializers import SongSerializer, GenreSerializer, MoodTagSerializer, InstrumentSerializer
+from contracts.permissions import HasSignedContract
+
 
 
 class SongUploadView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, HasSignedContract]
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
@@ -60,7 +62,7 @@ class SongDetailView(generics.RetrieveAPIView):
 
 
 class RecordPlayView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [HasSignedContract]
 
     def post(self, request, pk):
         try:
