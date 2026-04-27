@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +22,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-y*uy3r07x@kiv9q8@6)nf6m@-5tw(umlkgrv2puyrqtws#jb9e'
+
+
+# SIGNWELL
+SIGNWELL_BASE_URL = "https://www.signwell.com/api/v1"
+SIGNWELL_API_KEY = getenv("SIGNWELL_API_KEY")
+SIGNWELL_TEST_MODE = getenv("SIGNWELL_TEST_MODE", "True") == "True"
+SIGNWELL_WEBHOOK_SECRET = getenv("SIGNWELL_WEBHOOK_SECRET")
+SIGNWELL_RIGHTSHOLDER_TEMPLATE_ID = getenv("SIGNWELL_RIGHTSHOLDER_TEMPLATE_ID")
+SIGNWELL_BUYER_TEMPLATE_ID = getenv("SIGNWELL_BUYER_TEMPLATE_ID")
+
+CURRENT_CONTRACT_VERSION = "v1.0"
+SIGNWELL_TEMPLATE_IDS = {
+    'rightsholder': os.getenv("SIGNWELL_RIGHTSHOLDER_TEMPLATE_ID"),
+    'buyer': os.getenv("SIGNWELL_BUYER_TEMPLATE_ID"),
+}
+
+FRONTEND_URL = getenv("FRONTEND_URL", "http://localhost:3000")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +63,7 @@ INSTALLED_APPS = [
     # Apps
     'users',
     'songs',
+    'contracts',
 ]
 
 MIDDLEWARE = [
