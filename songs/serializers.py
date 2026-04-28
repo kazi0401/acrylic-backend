@@ -56,6 +56,6 @@ class SongSerializer(serializers.ModelSerializer):
             'genre', 'mood_tags', 'instruments',
             'genre_id', 'mood_tag_ids', 'instrument_ids',
             'play_count', 'license_count',
-            'is_approved', 'uploaded_at'
+            'status', 'uploaded_at', 'isrc', 'price'
         ]
-        read_only_fields = ['artist', 'play_count', 'license_count', 'is_approved', 'uploaded_at']
+        read_only_fields = ['artist', 'play_count', 'license_count', 'status', 'uploaded_at']

@@ -3,10 +3,10 @@ from .models import Song, Genre, MoodTag, Instrument
 
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
-    list_display = ['title', 'artist', 'genre', 'bpm', 'duration', 'play_count', 'license_count', 'is_approved', 'uploaded_at']
-    list_filter = ['is_approved', 'genre', 'mood_tags', 'instruments']
+    list_display = ['title', 'artist', 'genre', 'bpm', 'duration', 'play_count', 'license_count', 'status', 'uploaded_at']
+    list_filter = ['status', 'genre', 'mood_tags', 'instruments']
     search_fields = ['title', 'artist__username']
-    list_editable = ['is_approved']
+    list_editable = ['status']
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):

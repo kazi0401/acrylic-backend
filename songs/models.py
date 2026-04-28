@@ -56,8 +56,32 @@ class Song(models.Model):
     license_count = models.PositiveIntegerField(default=0)
 
     # Status
-    is_approved = models.BooleanField(default=False)
+    class Status(models.TextChoices):
+        DRAFT = 'draft', 'Draft'
+        PENDING_REVIEW = 'pending_review', 'Pending Review'
+        APPROVED = 'approved', 'Approved'
+        REJECTED = 'rejected', 'Rejected'
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.DRAFT
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    # International Standard Recording Code (ISRC)
+    from django.core.validators import RegexValidator
+
+    isrc_validator = RegexValidator(
+        regex=r'^[A-Z]{2}[A-Z0-9]{3}\d{7}$',
+        message='Enter a valid ISRC (e.g. USRC17607839)'
+    )
+
+    isrc = models.CharField(max_length=12, unique=True, validators=[isrc_validator])
+
+    # Pricing
+    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.title} by {self.artist.username}"

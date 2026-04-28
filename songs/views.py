@@ -26,7 +26,7 @@ class SongListView(generics.ListAPIView):
     serializer_class = SongSerializer
 
     def get_queryset(self):
-        queryset = Song.objects.filter(is_approved=True)
+        queryset = Song.objects.filter(status=Song.Status.APPROVED)
 
         # Filtering
         genre = self.request.query_params.get('genre')
@@ -58,7 +58,7 @@ class SongListView(generics.ListAPIView):
 class SongDetailView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
     serializer_class = SongSerializer
-    queryset = Song.objects.filter(is_approved=True)
+    queryset = Song.objects.filter(status=Song.Status.APPROVED)
 
 
 class RecordPlayView(APIView):
@@ -66,7 +66,7 @@ class RecordPlayView(APIView):
 
     def post(self, request, pk):
         try:
-            song = Song.objects.get(pk=pk, is_approved=True)
+            song = Song.objects.get(pk=pk, status=Song.Status.APPROVED)
             song.play_count += 1
             song.save()
             return Response({'play_count': song.play_count})
