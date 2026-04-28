@@ -5,11 +5,11 @@ from .views import InitiateSigningView, SignWellWebhookView, MockSigningView
 
 
 urlpatterns = [
-    path('contracts/initiate/', InitiateSigningView.as_view()),
-    path('contracts/webhook/', SignWellWebhookView.as_view()),
+    path('initiate/', InitiateSigningView.as_view()),
+    path('webhook/', SignWellWebhookView.as_view()),
 ]
 
 if settings.SIGNWELL_TEST_MODE:
     urlpatterns += [
-        path('contracts/mock-sign/', MockSigningView.as_view()),
+        path('mock-sign/', MockSigningView.as_view()),
     ]
