@@ -61,6 +61,7 @@ class Song(models.Model):
         PENDING_REVIEW = 'pending_review', 'Pending Review'
         APPROVED = 'approved', 'Approved'
         REJECTED = 'rejected', 'Rejected'
+        ARCHIVED = 'archived', 'Archived'
 
     status = models.CharField(
         max_length=20,

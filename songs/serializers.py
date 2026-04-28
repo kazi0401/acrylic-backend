@@ -59,3 +59,29 @@ class SongSerializer(serializers.ModelSerializer):
             'status', 'uploaded_at', 'isrc', 'price'
         ]
         read_only_fields = ['artist', 'play_count', 'license_count', 'status', 'uploaded_at']
+
+
+class SongEditSerializer(serializers.ModelSerializer):
+    genre = serializers.PrimaryKeyRelatedField(
+        queryset=Genre.objects.all(),
+        required=False
+    )
+    mood_tags = serializers.PrimaryKeyRelatedField(
+        queryset=MoodTag.objects.all(),
+        many=True,
+        required=False
+    )
+    instruments = serializers.PrimaryKeyRelatedField(
+        queryset=Instrument.objects.all(),
+        many=True,
+        required=False
+    )
+
+    class Meta:
+        model = Song
+        fields = [
+            'title',
+            'genre',
+            'mood_tags',
+            'instruments',
+        ]
