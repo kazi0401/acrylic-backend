@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'users',
     'songs',
     'contracts',
+    'license_requests'
 ]
 
 MIDDLEWARE = [
