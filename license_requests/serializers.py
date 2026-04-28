@@ -14,12 +14,12 @@ class LicenseRequestSerializer(serializers.ModelSerializer):
       ]
       read_only_fields = ['client', 'status', 'created_at', 'updated_at']
 
-      def validate(self, data):
-        if data.get('request_type') == 'internal' and not data.get('song'):
-            raise serializers.ValidationError("Internal requests must include a song.")
-        if data.get('request_type') == 'external' and not data.get('external_url'):
-            raise serializers.ValidationError("External requests must include a URL.")
-        return data
+    def validate(self, data):
+      if data.get('request_type') == 'internal' and not data.get('song'):
+          raise serializers.ValidationError("Internal requests must include a song.")
+      if data.get('request_type') == 'external' and not data.get('external_url'):
+          raise serializers.ValidationError("External requests must include a URL.")
+      return data
 
 class LicenseRequestAdminSerializer(serializers.ModelSerializer): 
    class Meta: 
