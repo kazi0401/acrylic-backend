@@ -38,6 +38,9 @@ SIGNWELL_TEMPLATE_IDS = {
     'buyer': getenv("SIGNWELL_BUYER_TEMPLATE_ID"),
 }
 
+# STRIPE
+STRIPE_TEST_MODE = getenv('STRIPE_TEST_MODE', 'True') == 'True'
+
 FRONTEND_URL = getenv("FRONTEND_URL", "http://localhost:3000")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -64,7 +67,9 @@ INSTALLED_APPS = [
     'users',
     'songs',
     'contracts',
-    'license_requests'
+    'license_requests',
+    'licenses',
+    'subscriptions',
 ]
 
 MIDDLEWARE = [
