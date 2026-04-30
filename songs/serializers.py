@@ -56,9 +56,13 @@ class SongSerializer(serializers.ModelSerializer):
             'genre', 'mood_tags', 'instruments',
             'genre_id', 'mood_tag_ids', 'instrument_ids',
             'play_count', 'license_count',
-            'status', 'uploaded_at', 'isrc', 'price'
+            'status', 'uploaded_at', 'isrc',
+            'track_tier', 'fixed_price',
         ]
-        read_only_fields = ['artist', 'play_count', 'license_count', 'status', 'uploaded_at']
+        read_only_fields = [
+            'artist', 'play_count', 'license_count',
+            'status', 'uploaded_at'
+        ]
 
 
 class SongEditSerializer(serializers.ModelSerializer):
@@ -84,4 +88,26 @@ class SongEditSerializer(serializers.ModelSerializer):
             'genre',
             'mood_tags',
             'instruments',
+            'track_tier',
+            'fixed_price',
         ]
+
+    def validate(self, data):
+        # On edits we may only be updating one field at a time,
+        # so fall back to the instance value if not provided
+        tier = data.get('track_tier', self.instance.track_tier if self.instance else None)
+        fixed_price = data.get('fixed_price', self.instance.fixed_price if self.instance else None)
+
+        if tier == Song.TrackTier.PRECLEAR and fixed_price is None:
+            raise serializers.ValidationError(
+                "PreClear tracks must have a fixed price."
+            )
+        if tier == Song.TrackTier.ARTIST_PROMO and fixed_price is not None:
+            raise serializers.ValidationError(
+                "Artist Promo tracks cannot have a price."
+            )
+        if tier == Song.TrackTier.BID2CLEAR and fixed_price is not None:
+            raise serializers.ValidationError(
+                "Bid2Clear tracks do not use a fixed price."
+            )
+        return data

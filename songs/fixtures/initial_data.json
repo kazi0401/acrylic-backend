@@ -1,8 +1,126 @@
 [
   {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "username": "admin_acrylic",
+      "email": "admin@acrylic.la",
+      "password": "pbkdf2_sha256$600000$22ab67d6a2035d497002c0a0a5523946$d43ef8d3de97116f133d8ea37f0e890e4c709a8bd17b1247fa1dc8f5e6815099",
+      "role": "admin",
+      "is_staff": true,
+      "is_superuser": true,
+      "is_active": true,
+      "first_name": "Acrylic",
+      "last_name": "Admin",
+      "date_joined": "2025-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "username": "artist_jordan",
+      "email": "jordan@example.com",
+      "password": "pbkdf2_sha256$600000$22ab67d6a2035d497002c0a0a5523946$d43ef8d3de97116f133d8ea37f0e890e4c709a8bd17b1247fa1dc8f5e6815099",
+      "role": "artist",
+      "is_staff": false,
+      "is_superuser": false,
+      "is_active": true,
+      "first_name": "Jordan",
+      "last_name": "Rivers",
+      "date_joined": "2025-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "username": "artist_maya",
+      "email": "maya@example.com",
+      "password": "pbkdf2_sha256$600000$22ab67d6a2035d497002c0a0a5523946$d43ef8d3de97116f133d8ea37f0e890e4c709a8bd17b1247fa1dc8f5e6815099",
+      "role": "artist",
+      "is_staff": false,
+      "is_superuser": false,
+      "is_active": true,
+      "first_name": "Maya",
+      "last_name": "Chen",
+      "date_joined": "2025-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "username": "client_cfmontreal",
+      "email": "content@cfmontreal.com",
+      "password": "pbkdf2_sha256$600000$22ab67d6a2035d497002c0a0a5523946$d43ef8d3de97116f133d8ea37f0e890e4c709a8bd17b1247fa1dc8f5e6815099",
+      "role": "client",
+      "is_staff": false,
+      "is_superuser": false,
+      "is_active": true,
+      "first_name": "CF",
+      "last_name": "Montreal",
+      "date_joined": "2025-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "username": "client_lafc",
+      "email": "content@lafc.com",
+      "password": "pbkdf2_sha256$600000$22ab67d6a2035d497002c0a0a5523946$d43ef8d3de97116f133d8ea37f0e890e4c709a8bd17b1247fa1dc8f5e6815099",
+      "role": "client",
+      "is_staff": false,
+      "is_superuser": false,
+      "is_active": true,
+      "first_name": "LAFC",
+      "last_name": "Content",
+      "date_joined": "2025-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.artistprofile",
+    "pk": 1,
+    "fields": {
+      "user": 2
+    }
+  },
+  {
+    "model": "users.artistprofile",
+    "pk": 2,
+    "fields": {
+      "user": 3
+    }
+  },
+  {
+    "model": "users.clientprofile",
+    "pk": 1,
+    "fields": {
+      "user": 4
+    }
+  },
+  {
+    "model": "users.clientprofile",
+    "pk": 2,
+    "fields": {
+      "user": 5
+    }
+  },
+  {
     "model": "songs.genre",
     "pk": 1,
-    "fields": { "name": "Jazz" }
+    "fields": { "name": "Hip-Hop" }
   },
   {
     "model": "songs.genre",
@@ -12,99 +130,321 @@
   {
     "model": "songs.genre",
     "pk": 3,
-    "fields": { "name": "Hip Hop" }
+    "fields": { "name": "R&B" }
+  },
+  {
+    "model": "songs.genre",
+    "pk": 4,
+    "fields": { "name": "Rock" }
+  },
+  {
+    "model": "songs.genre",
+    "pk": 5,
+    "fields": { "name": "Pop" }
+  },
+  {
+    "model": "songs.genre",
+    "pk": 6,
+    "fields": { "name": "Latin" }
   },
   {
     "model": "songs.moodtag",
     "pk": 1,
+    "fields": { "name": "Hype" }
+  },
+  {
+    "model": "songs.moodtag",
+    "pk": 2,
     "fields": { "name": "Chill" }
   },
   {
     "model": "songs.moodtag",
-    "pk": 2,
-    "fields": { "name": "Energetic" }
+    "pk": 3,
+    "fields": { "name": "Triumphant" }
   },
   {
     "model": "songs.moodtag",
-    "pk": 3,
-    "fields": { "name": "Dark" }
+    "pk": 4,
+    "fields": { "name": "Motivational" }
+  },
+  {
+    "model": "songs.moodtag",
+    "pk": 5,
+    "fields": { "name": "Emotional" }
+  },
+  {
+    "model": "songs.moodtag",
+    "pk": 6,
+    "fields": { "name": "Aggressive" }
   },
   {
     "model": "songs.instrument",
     "pk": 1,
-    "fields": { "name": "Piano" }
+    "fields": { "name": "808 Bass" }
   },
   {
     "model": "songs.instrument",
     "pk": 2,
+    "fields": { "name": "Synthesizer" }
+  },
+  {
+    "model": "songs.instrument",
+    "pk": 3,
     "fields": { "name": "Guitar" }
   },
   {
     "model": "songs.instrument",
-    "pk": 3,
+    "pk": 4,
     "fields": { "name": "Drums" }
+  },
+  {
+    "model": "songs.instrument",
+    "pk": 5,
+    "fields": { "name": "Piano" }
+  },
+  {
+    "model": "songs.instrument",
+    "pk": 6,
+    "fields": { "name": "Brass" }
   },
   {
     "model": "songs.song",
     "pk": 1,
     "fields": {
-      "title": "Midnight Groove",
-      "artist": 1,
+      "title": "Stadium Anthem",
+      "artist": 2,
       "duration": 187,
-      "bpm": 95,
-      "full_track": "songs/full/placeholder.mp3",
-      "preview_clip": "songs/previews/placeholder.mp3",
-      "spotify_link": "https://open.spotify.com/track/placeholder",
+      "bpm": 128,
+      "full_track": "songs/full/stadium_anthem.mp3",
+      "preview_clip": "songs/previews/stadium_anthem_preview.mp3",
+      "spotify_link": "https://open.spotify.com/track/example1",
       "apple_music_link": null,
       "genre": 1,
-      "mood_tags": [1],
-      "instruments": [1, 2],
-      "play_count": 120,
-      "license_count": 5,
-      "is_approved": true,
-      "uploaded_at": "2024-01-01T00:00:00Z"
+      "mood_tags": [1, 3, 4],
+      "instruments": [1, 4],
+      "play_count": 42,
+      "license_count": 3,
+      "status": "approved",
+      "isrc": "USRC17600001",
+      "track_tier": "preclear",
+      "fixed_price": "299.00",
+      "uploaded_at": "2025-02-01T10:00:00Z"
     }
   },
   {
     "model": "songs.song",
     "pk": 2,
     "fields": {
-      "title": "Neon Rush",
-      "artist": 1,
+      "title": "City Lights Instrumental",
+      "artist": 2,
       "duration": 210,
-      "bpm": 128,
-      "full_track": "songs/full/placeholder.mp3",
-      "preview_clip": "songs/previews/placeholder.mp3",
+      "bpm": 95,
+      "full_track": "songs/full/city_lights.mp3",
+      "preview_clip": "songs/previews/city_lights_preview.mp3",
       "spotify_link": null,
-      "apple_music_link": "https://music.apple.com/placeholder",
+      "apple_music_link": "https://music.apple.com/track/example2",
       "genre": 2,
-      "mood_tags": [2],
-      "instruments": [3],
-      "play_count": 340,
-      "license_count": 12,
-      "is_approved": true,
-      "uploaded_at": "2024-01-02T00:00:00Z"
+      "mood_tags": [2, 5],
+      "instruments": [2, 5],
+      "play_count": 18,
+      "license_count": 0,
+      "status": "approved",
+      "isrc": "USRC17600002",
+      "track_tier": "artist_promo",
+      "fixed_price": null,
+      "uploaded_at": "2025-02-05T10:00:00Z"
     }
   },
   {
     "model": "songs.song",
     "pk": 3,
     "fields": {
-      "title": "Shadow Walk",
-      "artist": 1,
+      "title": "Victory Lap",
+      "artist": 3,
       "duration": 195,
-      "bpm": 85,
-      "full_track": "songs/full/placeholder.mp3",
-      "preview_clip": "songs/previews/placeholder.mp3",
+      "bpm": 140,
+      "full_track": "songs/full/victory_lap.mp3",
+      "preview_clip": "songs/previews/victory_lap_preview.mp3",
+      "spotify_link": "https://open.spotify.com/track/example3",
+      "apple_music_link": null,
+      "genre": 4,
+      "mood_tags": [1, 3, 6],
+      "instruments": [3, 4],
+      "play_count": 67,
+      "license_count": 5,
+      "status": "approved",
+      "isrc": "USRC17600003",
+      "track_tier": "preclear",
+      "fixed_price": "499.00",
+      "uploaded_at": "2025-02-08T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 4,
+    "fields": {
+      "title": "Golden Hour",
+      "artist": 3,
+      "duration": 224,
+      "bpm": 88,
+      "full_track": "songs/full/golden_hour.mp3",
+      "preview_clip": "songs/previews/golden_hour_preview.mp3",
+      "spotify_link": "https://open.spotify.com/track/example4",
+      "apple_music_link": null,
+      "genre": 3,
+      "mood_tags": [2, 5],
+      "instruments": [5, 6],
+      "play_count": 31,
+      "license_count": 0,
+      "status": "approved",
+      "isrc": "USRC17600004",
+      "track_tier": "artist_promo",
+      "fixed_price": null,
+      "uploaded_at": "2025-02-10T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 5,
+    "fields": {
+      "title": "Legacy",
+      "artist": 2,
+      "duration": 241,
+      "bpm": 112,
+      "full_track": "songs/full/legacy.mp3",
+      "preview_clip": "songs/previews/legacy_preview.mp3",
+      "spotify_link": "https://open.spotify.com/track/example5",
+      "apple_music_link": "https://music.apple.com/track/example5",
+      "genre": 1,
+      "mood_tags": [3, 4, 5],
+      "instruments": [1, 2, 4],
+      "play_count": 89,
+      "license_count": 2,
+      "status": "approved",
+      "isrc": "USRC17600005",
+      "track_tier": "bid2clear",
+      "fixed_price": null,
+      "uploaded_at": "2025-02-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 6,
+    "fields": {
+      "title": "Neon Rush",
+      "artist": 3,
+      "duration": 178,
+      "bpm": 150,
+      "full_track": "songs/full/neon_rush.mp3",
+      "preview_clip": "songs/previews/neon_rush_preview.mp3",
+      "spotify_link": null,
+      "apple_music_link": null,
+      "genre": 2,
+      "mood_tags": [1, 6],
+      "instruments": [2, 4],
+      "play_count": 0,
+      "license_count": 0,
+      "status": "pending_review",
+      "isrc": "USRC17600006",
+      "track_tier": "preclear",
+      "fixed_price": "199.00",
+      "uploaded_at": "2025-03-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 7,
+    "fields": {
+      "title": "Unfinished Business",
+      "artist": 2,
+      "duration": 203,
+      "bpm": 102,
+      "full_track": "songs/full/unfinished_business.mp3",
+      "preview_clip": "songs/previews/unfinished_business_preview.mp3",
+      "spotify_link": null,
+      "apple_music_link": null,
+      "genre": 5,
+      "mood_tags": [4, 5],
+      "instruments": [3, 5],
+      "play_count": 0,
+      "license_count": 0,
+      "status": "draft",
+      "isrc": "USRC17600007",
+      "track_tier": "artist_promo",
+      "fixed_price": null,
+      "uploaded_at": "2025-03-05T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 8,
+    "fields": {
+      "title": "Borderline",
+      "artist": 3,
+      "duration": 196,
+      "bpm": 118,
+      "full_track": "songs/full/borderline.mp3",
+      "preview_clip": "songs/previews/borderline_preview.mp3",
+      "spotify_link": "https://open.spotify.com/track/example8",
+      "apple_music_link": null,
+      "genre": 6,
+      "mood_tags": [2, 5],
+      "instruments": [3, 6],
+      "play_count": 0,
+      "license_count": 0,
+      "status": "rejected",
+      "isrc": "USRC17600008",
+      "track_tier": "preclear",
+      "fixed_price": "149.00",
+      "uploaded_at": "2025-03-08T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 9,
+    "fields": {
+      "title": "Throwback",
+      "artist": 2,
+      "duration": 215,
+      "bpm": 96,
+      "full_track": "songs/full/throwback.mp3",
+      "preview_clip": "songs/previews/throwback_preview.mp3",
       "spotify_link": null,
       "apple_music_link": null,
       "genre": 3,
-      "mood_tags": [3],
-      "instruments": [2, 3],
-      "play_count": 89,
-      "license_count": 3,
-      "is_approved": true,
-      "uploaded_at": "2024-01-03T00:00:00Z"
+      "mood_tags": [2, 5],
+      "instruments": [5, 4],
+      "play_count": 14,
+      "license_count": 1,
+      "status": "archived",
+      "isrc": "USRC17600009",
+      "track_tier": "preclear",
+      "fixed_price": "249.00",
+      "uploaded_at": "2025-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "songs.song",
+    "pk": 10,
+    "fields": {
+      "title": "Fuego",
+      "artist": 3,
+      "duration": 189,
+      "bpm": 122,
+      "full_track": "songs/full/fuego.mp3",
+      "preview_clip": "songs/previews/fuego_preview.mp3",
+      "spotify_link": "https://open.spotify.com/track/example10",
+      "apple_music_link": "https://music.apple.com/track/example10",
+      "genre": 6,
+      "mood_tags": [1, 3, 4],
+      "instruments": [3, 4, 6],
+      "play_count": 55,
+      "license_count": 4,
+      "status": "approved",
+      "isrc": "USRC17600010",
+      "track_tier": "preclear",
+      "fixed_price": "399.00",
+      "uploaded_at": "2025-03-10T10:00:00Z"
     }
   }
 ]

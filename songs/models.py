@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.conf import settings
 
 class Genre(models.Model):
@@ -71,8 +72,6 @@ class Song(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     # International Standard Recording Code (ISRC)
-    from django.core.validators import RegexValidator
-
     isrc_validator = RegexValidator(
         regex=r'^[A-Z]{2}[A-Z0-9]{3}\d{7}$',
         message='Enter a valid ISRC (e.g. USRC17607839)'
@@ -81,7 +80,24 @@ class Song(models.Model):
     isrc = models.CharField(max_length=12, unique=True, validators=[isrc_validator])
 
     # Pricing
-    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    class TrackTier(models.TextChoices):
+        BID2CLEAR = 'bid2clear', 'Bid2Clear'
+        PRECLEAR = 'preclear', 'PreClear'
+        ARTIST_PROMO = 'artist_promo', 'Artist Promo'
+
+    track_tier = models.CharField(
+        max_length=20,
+        choices=TrackTier.choices,
+        default=TrackTier.PRECLEAR
+    )
+
+    # required for PreClear, must be null for Artist Promo
+    # enforced via serializer validate()
+    fixed_price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True, blank=True
+    )
 
 
     def __str__(self):
