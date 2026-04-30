@@ -10,7 +10,7 @@ class HasActiveSubscription(BasePermission):
         
         try:
             subscription = BuyerSubscription.objects.get(
-                profile=request.user.clientprofile
+                profile=request.user.client_profile
             )
             return subscription.status == 'active'
         except BuyerSubscription.DoesNotExist:

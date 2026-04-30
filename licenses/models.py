@@ -6,14 +6,14 @@ from subscriptions.models import BuyerSubscription
 class License(models.Model):
 
     class Status(models.TextChoices):
-        ACTIVE = 'active'
-        EXPIRED = 'expired'
-        REVOKED = 'revoked'
+        ACTIVE = 'active', 'Active'
+        EXPIRED = 'expired', 'Expired'
+        REVOKED = 'revoked', 'Revoked'
 
     class LicenseType(models.TextChoices):
-        BID2CLEAR = 'bid2clear'
-        PRECLEAR = 'preclear'
-        ARTISTPROMO = 'artist_promo'
+        BID2CLEAR = 'bid2clear', 'Bid2Clear'
+        PRECLEAR = 'preclear', 'PreClear'
+        ARTIST_PROMO = 'artist_promo', 'Artist Promo'
 
     # Who and what
     client = models.ForeignKey(
@@ -43,7 +43,8 @@ class License(models.Model):
     )
     price_paid = models.DecimalField(
         max_digits=8,
-        decimal_places=2
+        decimal_places=2,
+        null=True, blank=True
     )
 
     # Terms
@@ -58,3 +59,6 @@ class License(models.Model):
         default=Status.ACTIVE
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.client.user.username} - {self.song.title} ({self.license_type})"
