@@ -4,7 +4,6 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from django.utils import timezone
 from .models import SubscriptionTier, BuyerSubscription
-from users.models import ClientProfile
 
 User = get_user_model()
 
@@ -35,7 +34,7 @@ class BuyerSubscriptionModelTests(TestCase):
         self.buyer = User.objects.create_user(
             username='buyer1', password='testpass', role='client'
         )
-        self.profile = ClientProfile.objects.create(user=self.buyer)
+        self.profile = self.buyer.client_profile
         self.tier = SubscriptionTier.objects.create(
             name='Pro',
             price_annual='5000.00',
@@ -66,7 +65,6 @@ class BuyerSubscriptionModelTests(TestCase):
         self.assertIn('Pro', str(sub))
 
     def test_multiple_subscriptions_allowed(self):
-        # History — same profile can have multiple rows
         BuyerSubscription.objects.create(
             profile=self.profile,
             tier=self.tier,
@@ -105,7 +103,6 @@ class SubscriptionTierListViewTests(TestCase):
             price_annual='3000.00',
             includes_artist_promo=False,
             is_active=False
-            # inactive — should not appear
         )
 
     def test_lists_only_active_tiers(self):
@@ -115,7 +112,6 @@ class SubscriptionTierListViewTests(TestCase):
         self.assertEqual(response.data[0]['name'], 'Pro')
 
     def test_no_auth_required(self):
-        # Unauthenticated users can view tiers
         response = self.client_http.get('/api/subscriptions/tiers/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -127,7 +123,7 @@ class SubscribeViewTests(TestCase):
         self.buyer = User.objects.create_user(
             username='buyer1', password='testpass', role='client'
         )
-        self.profile = ClientProfile.objects.create(user=self.buyer)
+        self.profile = self.buyer.client_profile
         self.artist = User.objects.create_user(
             username='artist1', password='testpass', role='artist'
         )
@@ -187,7 +183,7 @@ class SubscribeViewTests(TestCase):
         unsigned_buyer = User.objects.create_user(
             username='unsigned', password='testpass', role='client'
         )
-        ClientProfile.objects.create(user=unsigned_buyer)
+        # Signal creates profile automatically
         self.client_http.force_authenticate(user=unsigned_buyer)
         response = self.client_http.post('/api/subscriptions/subscribe/', {
             'tier_id': self.tier.id
@@ -221,7 +217,7 @@ class MySubscriptionViewTests(TestCase):
         self.buyer = User.objects.create_user(
             username='buyer1', password='testpass', role='client'
         )
-        self.profile = ClientProfile.objects.create(user=self.buyer)
+        self.profile = self.buyer.client_profile
         self.tier = SubscriptionTier.objects.create(
             name='Pro',
             price_annual='5000.00',
@@ -273,7 +269,7 @@ class CancelSubscriptionViewTests(TestCase):
         self.buyer = User.objects.create_user(
             username='buyer1', password='testpass', role='client'
         )
-        self.profile = ClientProfile.objects.create(user=self.buyer)
+        self.profile = self.buyer.client_profile
         self.tier = SubscriptionTier.objects.create(
             name='Pro',
             price_annual='5000.00',
