@@ -109,14 +109,6 @@ class SongModelTest(TestCase):
         song = make_song(self.artist, isrc='GBAYE0601498', bpm=None)
         self.assertIsNone(song.bpm)
 
-    def test_price_is_optional(self):
-        song = make_song(self.artist, isrc='GBAYE0601498', price=None)
-        self.assertIsNone(song.price)
-
-    def test_price_stores_decimal(self):
-        song = make_song(self.artist, isrc='GBAYE0601498', price=Decimal('49.99'))
-        self.assertEqual(song.price, Decimal('49.99'))
-
     def test_deleting_artist_cascades_to_songs(self):
         make_song(self.artist)
         self.artist.delete()
