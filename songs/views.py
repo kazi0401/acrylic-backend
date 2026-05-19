@@ -10,12 +10,14 @@ from .models import Song, Genre, MoodTag, Instrument
 from .serializers import SongSerializer, GenreSerializer, MoodTagSerializer, InstrumentSerializer, SongEditSerializer
 
 from contracts.permissions import HasSignedContract
+from users.permissions import IsArtist
 from .permissions import IsTrackOwner
 
 
-
 class SongUploadView(APIView):
-    permission_classes = [IsAuthenticated, HasSignedContract]
+    # IsArtist added: only artists should be able to upload tracks.
+    # Stacked after IsAuthenticated so unauthenticated requests get 401, not 403.
+    permission_classes = [IsAuthenticated, IsArtist, HasSignedContract]
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
@@ -26,6 +28,27 @@ class SongUploadView(APIView):
         return Response(serializer.errors, status=drf_status.HTTP_400_BAD_REQUEST)
 
 
+class MyTracksView(generics.ListAPIView):
+    """
+    GET /api/songs/my-tracks/
+    Returns all tracks belonging to the authenticated artist, across all
+    statuses (draft, pending_review, approved, rejected, archived).
+    Ordered newest-first so the dashboard shows recent uploads at the top.
+
+    Auth: IsAuthenticated + IsArtist + HasSignedContract (rightsholder contract).
+    Clients and admins hitting this endpoint get 403.
+    """
+    permission_classes = [IsAuthenticated, IsArtist, HasSignedContract]
+    serializer_class = SongSerializer
+
+    def get_queryset(self):
+        return Song.objects.filter(artist=self.request.user).order_by('-uploaded_at')
+
+    # Override to pass request into get_queryset correctly via self.request
+    def get_queryset(self):
+        return Song.objects.filter(artist=self.request.user).order_by('-uploaded_at')
+
+
 class SongListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = SongSerializer
@@ -33,7 +56,6 @@ class SongListView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Song.objects.filter(status=Song.Status.APPROVED)
 
-        # Filtering
         genre = self.request.query_params.get('genre')
         mood = self.request.query_params.get('mood')
         instrument = self.request.query_params.get('instrument')
@@ -51,9 +73,12 @@ class SongListView(generics.ListAPIView):
         if max_bpm:
             queryset = queryset.filter(bpm__lte=max_bpm)
 
-        # Sorting
         sort_by = self.request.query_params.get('sort_by', '-uploaded_at')
-        allowed_sort_fields = ['bpm', '-bpm', 'duration', '-duration', 'uploaded_at', '-uploaded_at', 'play_count', '-play_count']
+        allowed_sort_fields = [
+            'bpm', '-bpm', 'duration', '-duration',
+            'uploaded_at', '-uploaded_at',
+            'play_count', '-play_count',
+        ]
         if sort_by in allowed_sort_fields:
             queryset = queryset.order_by(sort_by)
 
@@ -66,31 +91,79 @@ class SongDetailView(generics.RetrieveAPIView):
     queryset = Song.objects.filter(status=Song.Status.APPROVED)
 
 
-class SongEditView(APIView): 
+class SongEditView(APIView):
     permission_classes = [IsAuthenticated, HasSignedContract, IsTrackOwner]
     serializer_class = SongEditSerializer
 
-    def patch(self, request, pk): 
-                # 1. Fetch the song
+    def patch(self, request, pk):
         song = get_object_or_404(Song, pk=pk)
-
-        # 2. Trigger object-level permission check HERE
         self.check_object_permissions(request, song)
 
-        # 3. Now check if the status allows editing
         if song.status not in [Song.Status.DRAFT, Song.Status.REJECTED]:
             return Response(
                 {"detail": "This track can no longer be edited."},
                 status=drf_status.HTTP_403_FORBIDDEN
             )
 
-        # 4. Proceed with the update
         serializer = SongEditSerializer(song, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=drf_status.HTTP_400_BAD_REQUEST)
 
+
+class SongArchiveView(APIView):
+    """
+    POST /api/songs/<id>/archive/
+    Soft-deletes a track by setting status to archived.
+    Any non-archived song owned by the artist can be archived.
+    Requires JWT + signed rightsholder contract + ownership.
+    """
+    permission_classes = [IsAuthenticated, HasSignedContract, IsTrackOwner]
+
+    def post(self, request, pk):
+        song = get_object_or_404(Song, pk=pk)
+        self.check_object_permissions(request, song)
+
+        if song.status == Song.Status.ARCHIVED:
+            return Response(
+                {"detail": "Track is already archived."},
+                status=drf_status.HTTP_400_BAD_REQUEST
+            )
+
+        song.status = Song.Status.ARCHIVED
+        song.save()
+        return Response(
+            {"detail": "Track archived.", "status": song.status},
+            status=drf_status.HTTP_200_OK
+        )
+
+
+class SongRestoreView(APIView):
+    """
+    POST /api/songs/<id>/restore/
+    Restores an archived track back to draft so the artist can re-edit
+    and re-submit it. Only archived tracks can be restored.
+    Requires JWT + signed rightsholder contract + ownership.
+    """
+    permission_classes = [IsAuthenticated, HasSignedContract, IsTrackOwner]
+
+    def post(self, request, pk):
+        song = get_object_or_404(Song, pk=pk)
+        self.check_object_permissions(request, song)
+
+        if song.status != Song.Status.ARCHIVED:
+            return Response(
+                {"detail": "Only archived tracks can be restored."},
+                status=drf_status.HTTP_400_BAD_REQUEST
+            )
+
+        song.status = Song.Status.DRAFT
+        song.save()
+        return Response(
+            {"detail": "Track restored to draft.", "status": song.status},
+            status=drf_status.HTTP_200_OK
+        )
 
 
 class RecordPlayView(APIView):
