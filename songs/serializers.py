@@ -51,7 +51,7 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields = [
             'id', 'title', 'artist', 'duration', 'bpm',
-            'full_track', 'preview_clip',
+            'full_track', 'preview_clip', 'cover_image'
             'spotify_link', 'apple_music_link',
             'genre', 'mood_tags', 'instruments',
             'genre_id', 'mood_tag_ids', 'instrument_ids',
@@ -86,6 +86,7 @@ class SongEditSerializer(serializers.ModelSerializer):
         fields = [
             'title',
             'genre',
+            'cover_image'
             'mood_tags',
             'instruments',
             'track_tier',

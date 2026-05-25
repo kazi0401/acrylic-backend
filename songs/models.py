@@ -34,6 +34,9 @@ class Song(models.Model):
     duration = models.PositiveIntegerField(help_text="Duration in seconds")
     bpm = models.PositiveIntegerField(null=True, blank=True)
 
+    # Cover image
+    cover_image = models.ImageField(upload_to='songs/covers/', blank=True, null=True)
+
     # Audio files
     full_track = models.FileField(upload_to='songs/full/')
     preview_clip = models.FileField(upload_to='songs/previews/')
