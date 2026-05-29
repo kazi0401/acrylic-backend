@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.db import models
 
 from django.shortcuts import get_object_or_404
 
@@ -53,6 +54,7 @@ class SongListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = SongSerializer
 
+
     def get_queryset(self):
         queryset = Song.objects.filter(status=Song.Status.APPROVED)
 
@@ -72,6 +74,17 @@ class SongListView(generics.ListAPIView):
             queryset = queryset.filter(bpm__gte=min_bpm)
         if max_bpm:
             queryset = queryset.filter(bpm__lte=max_bpm)
+
+        search = self.request.query_params.get('search')
+        if search:
+            queryset = queryset.filter(
+                models.Q(title__icontains=search) |
+                models.Q(artist__first_name__icontains=search) |
+                models.Q(artist__last_name__icontains=search) |
+                models.Q(artist__username__icontains=search) |
+                models.Q(genre__name__icontains=search) |
+                models.Q(mood_tags__name__icontains=search)
+            ).distinct()
 
         sort_by = self.request.query_params.get('sort_by', '-uploaded_at')
         allowed_sort_fields = [
