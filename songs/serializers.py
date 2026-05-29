@@ -24,6 +24,14 @@ class SongSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(read_only=True)
     mood_tags = MoodTagSerializer(many=True, read_only=True)
     instruments = InstrumentSerializer(many=True, read_only=True)
+    artist_name = serializers.SerializerMethodField()  
+
+    def get_artist_name(self, obj):                   
+        first = obj.artist.first_name
+        last = obj.artist.last_name
+        if first and last:
+            return f"{first} {last}"
+        return first or obj.artist.username
 
     # Write-only fields for uploading
     genre_id = serializers.PrimaryKeyRelatedField(
@@ -50,7 +58,7 @@ class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         fields = [
-            'id', 'title', 'artist', 'duration', 'bpm',
+            'id', 'title', 'artist', 'artist_name', 'duration', 'bpm',
             'full_track', 'preview_clip', 'cover_image',
             'spotify_link', 'apple_music_link',
             'genre', 'mood_tags', 'instruments',
