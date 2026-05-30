@@ -21,13 +21,8 @@ class LicenseAdmin(admin.ModelAdmin):
         'song__title'
     ]
     readonly_fields = [
-        'client',
-        'song',
-        'license_type',
-        'subscription',
         'stripe_payment_intent_id',
         'price_paid',
-        'valid_from',
         'created_at'
     ]
     # Only status is editable in admin — for manual revocation if needed

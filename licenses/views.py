@@ -79,7 +79,7 @@ class PreClearLicenseView(APIView):
         )
 
         return Response(
-            LicenseSerializer(license).data,
+            LicenseSerializer(license, context={'request': request}).data,
             status=status.HTTP_201_CREATED
         )
 
@@ -126,7 +126,7 @@ class ArtistPromoLicenseView(APIView):
         )
 
         return Response(
-            LicenseSerializer(license).data,
+            LicenseSerializer(license, context={'request': request}).data,
             status=status.HTTP_201_CREATED
         )
 
@@ -151,7 +151,7 @@ class MyLicensesView(APIView):
             client=profile
         ).order_by('-created_at')
 
-        serializer = LicenseSerializer(licenses, many=True)
+        serializer = LicenseSerializer(licenses, many=True, context={'request': request})
         return Response(serializer.data)
 
 
@@ -180,5 +180,5 @@ class LicenseDetailView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = LicenseSerializer(license)
+        serializer = LicenseSerializer(license, context={'request': request})
         return Response(serializer.data)

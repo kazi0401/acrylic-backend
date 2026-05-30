@@ -10,9 +10,19 @@ class LicenseSerializer(serializers.ModelSerializer):
     Used by buyers to view their licenses.
     All billing and internal fields are read only.
     """
+class LicenseSerializer(serializers.ModelSerializer):
     song_title = serializers.CharField(source='song.title', read_only=True)
-    song_artist = serializers.CharField(source='song.artist.username', read_only=True)
+    song_cover_image = serializers.ImageField(source='song.cover_image', read_only=True)
     tier = serializers.CharField(source='song.track_tier', read_only=True)
+
+    song_artist = serializers.SerializerMethodField()
+
+    def get_song_artist(self, obj):
+        first = obj.song.artist.first_name
+        last = obj.song.artist.last_name
+        if first and last:
+            return f"{first} {last}"
+        return first or obj.song.artist.username
 
     class Meta:
         model = License
@@ -21,6 +31,7 @@ class LicenseSerializer(serializers.ModelSerializer):
             'song',
             'song_title',
             'song_artist',
+            'song_cover_image',
             'tier',
             'license_type',
             'status',
@@ -28,13 +39,6 @@ class LicenseSerializer(serializers.ModelSerializer):
             'usage_details',
             'valid_from',
             'valid_until',
-            'created_at',
-        ]
-        read_only_fields = [
-            'license_type',
-            'status',
-            'price_paid',
-            'valid_from',
             'created_at',
         ]
 
