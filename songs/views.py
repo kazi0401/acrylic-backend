@@ -66,9 +66,14 @@ class SongListView(generics.ListAPIView):
         max_bpm = self.request.query_params.get('max_bpm')
 
         if genre:
-            queryset = queryset.filter(genre__name__icontains=genre)
+            genre_list = [g.strip() for g in genre.split(',') if g.strip()]
+            queryset = queryset.filter(genre__name__in=genre_list)
         if mood:
-            queryset = queryset.filter(mood_tags__name__icontains=mood)
+            mood_list = [m.strip() for m in mood.split(',') if m.strip()]
+            q = models.Q()
+            for m in mood_list:
+                q |= models.Q(mood_tags__name__iexact=m)
+            queryset = queryset.filter(q).distinct()
         if instrument:
             queryset = queryset.filter(instruments__name__icontains=instrument)
         if min_bpm:
