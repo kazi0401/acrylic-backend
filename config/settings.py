@@ -156,6 +156,12 @@ REST_FRAMEWORK = {
     ),
 }
 
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
+
 # Where uploaded files (songs, etc.) will be saved locally
 import os
 MEDIA_URL = '/media/'

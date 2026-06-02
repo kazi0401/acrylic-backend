@@ -51,6 +51,7 @@ class MyTracksView(generics.ListAPIView):
 
 
 class SongListView(generics.ListAPIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = SongSerializer
 
@@ -99,6 +100,7 @@ class SongListView(generics.ListAPIView):
 
 
 class SongDetailView(generics.RetrieveAPIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = SongSerializer
     queryset = Song.objects.filter(status=Song.Status.APPROVED)
@@ -193,18 +195,21 @@ class RecordPlayView(APIView):
 
 
 class GenreListView(generics.ListAPIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
 
 
 class MoodTagListView(generics.ListAPIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = MoodTagSerializer
     queryset = MoodTag.objects.all()
 
 
 class InstrumentListView(generics.ListAPIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = InstrumentSerializer
     queryset = Instrument.objects.all()
