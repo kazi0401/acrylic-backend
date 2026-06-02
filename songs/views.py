@@ -119,9 +119,9 @@ class SongEditView(APIView):
         song = get_object_or_404(Song, pk=pk)
         self.check_object_permissions(request, song)
 
-        if song.status not in [Song.Status.DRAFT, Song.Status.REJECTED]:
+        if song.status == Song.Status.ARCHIVED:
             return Response(
-                {"detail": "This track can no longer be edited."},
+                {"detail": "Archived tracks cannot be edited."},
                 status=drf_status.HTTP_403_FORBIDDEN
             )
 
