@@ -66,9 +66,14 @@ class SongListView(generics.ListAPIView):
         max_bpm = self.request.query_params.get('max_bpm')
 
         if genre:
-            queryset = queryset.filter(genre__name__icontains=genre)
+            genre_list = [g.strip() for g in genre.split(',') if g.strip()]
+            queryset = queryset.filter(genre__name__in=genre_list)
         if mood:
-            queryset = queryset.filter(mood_tags__name__icontains=mood)
+            mood_list = [m.strip() for m in mood.split(',') if m.strip()]
+            q = models.Q()
+            for m in mood_list:
+                q |= models.Q(mood_tags__name__iexact=m)
+            queryset = queryset.filter(q).distinct()
         if instrument:
             queryset = queryset.filter(instruments__name__icontains=instrument)
         if min_bpm:
@@ -114,9 +119,9 @@ class SongEditView(APIView):
         song = get_object_or_404(Song, pk=pk)
         self.check_object_permissions(request, song)
 
-        if song.status not in [Song.Status.DRAFT, Song.Status.REJECTED]:
+        if song.status == Song.Status.ARCHIVED:
             return Response(
-                {"detail": "This track can no longer be edited."},
+                {"detail": "Archived tracks cannot be edited."},
                 status=drf_status.HTTP_403_FORBIDDEN
             )
 

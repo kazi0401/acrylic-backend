@@ -95,6 +95,8 @@ class SongEditSerializer(serializers.ModelSerializer):
             'title',
             'genre',
             'cover_image',
+            'full_track',
+            'preview_clip',
             'mood_tags',
             'instruments',
             'track_tier',
@@ -102,21 +104,18 @@ class SongEditSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        # On edits we may only be updating one field at a time,
-        # so fall back to the instance value if not provided
-        tier = data.get('track_tier', self.instance.track_tier if self.instance else None)
+        if 'track_tier' not in data:
+            return data
+
+        tier = data['track_tier']
         fixed_price = data.get('fixed_price', self.instance.fixed_price if self.instance else None)
 
-        if tier == Song.TrackTier.PRECLEAR and fixed_price is None:
+        if tier == Song.TrackTier.PRECLEAR and not fixed_price:
             raise serializers.ValidationError(
                 "PreClear tracks must have a fixed price."
             )
-        if tier == Song.TrackTier.ARTIST_PROMO and fixed_price is not None:
-            raise serializers.ValidationError(
-                "Artist Promo tracks cannot have a price."
-            )
-        if tier == Song.TrackTier.BID2CLEAR and fixed_price is not None:
-            raise serializers.ValidationError(
-                "Bid2Clear tracks do not use a fixed price."
-            )
+
+        if tier != Song.TrackTier.PRECLEAR:
+            data['fixed_price'] = None
+
         return data
