@@ -3,12 +3,27 @@ from .models import LicenseRequest
 
 
 class LicenseRequestSerializer(serializers.ModelSerializer):
+    song_title  = serializers.SerializerMethodField()
+    song_artist = serializers.SerializerMethodField()
+
+    def get_song_title(self, obj):
+        if obj.song:
+            return obj.song.title
+        return obj.external_song_title
+
+    def get_song_artist(self, obj):
+        if obj.song:
+            a = obj.song.artist
+            name = f"{a.first_name} {a.last_name}".strip()
+            return name or a.username
+        return obj.external_artist_name
+
     class Meta:
       model = LicenseRequest
       fields = [
-          'id', 'client', 'song',
+          'id', 'client', 'song', 'song_title', 'song_artist',
           'external_song_title', 'external_artist_name', 'external_url',
-          'request_type', 'status', 
+          'request_type', 'status',
           'usage_details', 'budget',
           'created_at', 'updated_at'
       ]
